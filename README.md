@@ -1,66 +1,112 @@
-# Calculator - Unit Test Automation (Assignment 3)
+# Calculator Unit Test Automation
 
-Open-source (MIT) Python calculator written by Ahmed Sufian and Abdullah Amir,
-with an automated pytest suite. FAST NUCES, Software Quality Engineering.
+A Python calculator and automated test suite for Assignment 3 in Software Quality Engineering at FAST NUCES. The project demonstrates unit, class, workflow, and data-driven testing with pytest.
 
-Repository: https://github.com/AbdullahA35/Basic-Python-Calculator.git
+Contributors: Ahmed Sufian and Abdullah Amir.
+
+Repository: https://github.com/AbdullahA35/Basic-Python-Calculator
+License: MIT
 
 ## Project layout
 
 | Path | Purpose |
 |---|---|
-| `calculator/` | `addition.py`, `subtraction.py`, `multiplication.py`, `division.py` (one function each) and `calculator.py` (`Calculator` class with history) |
-| `tests/unit/ahmed/`, `tests/unit/abdullah/` | Each person's tests: function tests, `Calculator` method tests, class-level tests |
-| `tests/workflow/` | Ordered, stateful session tests |
-| `tests/test_smoke.py` | Smoke tests, run first |
-| `tests/test_csv_data.py`, `tests/data/calculator_cases.csv` | CSV-driven tests (one test per row) |
-| `tests/test_excel_cases.py`, `test_cases.xlsx` | Excel test cases (Author column), executed by pytest |
-| `scripts/update_excel_results.py` | Runs the Excel cases and writes Actual Result / Status back |
-| `docs/test_design_notes.md` | ECP and BVA notes |
-| `docs/video_demo_setup.mp4` | Environment setup video |
+| `calculator/` | Calculator package: four arithmetic functions and the `Calculator` class with operation history |
+| `tests/unit/ahmed/` | Ahmed's unit and class tests, focused mainly on equivalence classes |
+| `tests/unit/abdullah/` | Abdullah's unit and class tests, focused mainly on boundaries and invalid input |
+| `tests/workflow/` | Ordered tests for a multi-step calculator session |
+| `tests/test_smoke.py` | Fast checks that the package and class work |
+| `tests/test_csv_data.py` and `tests/data/calculator_cases.csv` | One pytest case per CSV row; rows include their author's name |
+| `tests/test_excel_cases.py` and `test_cases.xlsx` | Excel cases executed by pytest; each row includes its author |
+| `docs/test_design_notes.md` | ECP and BVA test design notes |
+| `docs/Assignment3_Documentation.docx` | Assignment report and contribution record |
+| `docs/video_demo_setup.mp4` | Windows environment setup demonstration |
+| `scripts/update_excel_results.py` | Runs workbook cases and updates Actual Result and Status |
+| `pytest.ini` and `requirements.txt` | Test discovery, markers, ordering options, and dependencies |
 
-## Setup (Windows PowerShell)
+The four arithmetic files at the repository root are retained from the original calculator project. The assignment tests use the package under `calculator/`.
+
+## Setup
+
+Python 3 and pip are required.
+
+### Windows PowerShell
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pytest --version
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m pytest --version
 ```
 
-## Running tests
+### macOS or Linux
 
-| Goal | Command (prefix with `.\.venv\Scripts\python.exe -m`) |
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m pytest --version
+```
+
+Activate the virtual environment in each new terminal before running the commands below.
+
+## Run the tests
+
+Run the full suite serially:
+
+```sh
+python -m pytest -v
+```
+
+Run it with four workers:
+
+```sh
+python -m pytest -n 4 -v
+```
+
+Run a suite or an individual's tests by marker:
+
+```sh
+python -m pytest -m addition -v
+python -m pytest -m "ahmed" -v
+python -m pytest -m "abdullah" -v
+```
+
+Other registered markers are `smoke`, `unit`, `subtraction`, `multiplication`, `division`, `method`, `class_level`, `workflow`, `csvdata`, and `excel`.
+
+Show collected tests and their order:
+
+```sh
+python -m pytest --collect-only -q
+```
+
+Measure line and branch coverage:
+
+```sh
+python -m pytest --cov=calculator --cov-branch
+```
+
+Update the workbook's Actual Result and Status columns after running its cases:
+
+```sh
+python scripts/update_excel_results.py
+```
+
+Review the workbook changes before committing them. The script writes its results back to `test_cases.xlsx`.
+
+## Test order
+
+| Order | Test group |
 |---|---|
-| Everything, in the configured order | `pytest -v` |
-| In parallel | `pytest -n auto -v` |
-| One suite | `pytest -m addition` (also `subtraction`, `multiplication`, `division`, `method`, `class_level`, `workflow`, `csvdata`, `excel`, `smoke`) |
-| One person's tests | `pytest -m ahmed` or `pytest -m abdullah` |
-| Show the execution order | `pytest --collect-only -q` |
-| Coverage | `pytest --cov=calculator --cov-branch` |
-| Refresh Excel results | `python scripts/update_excel_results.py` |
-
-## Execution order (pytest-order)
-
-Groups carry a module-level `pytest.mark.order(N)`; the workflow steps carry their own
-indexes (801-806).
-
-| Order | Group |
-|---|---|
-| 100 | smoke |
-| 200 / 300 / 400 / 500 | addition / subtraction / multiplication / division function tests |
+| 100 | Smoke tests |
+| 200–500 | Addition, subtraction, multiplication, and division function tests |
 | 600 | `Calculator` method tests |
-| 700 | `Calculator` class-level tests |
-| 801-806 | workflow session (step 1 to 6) |
+| 700 | `Calculator` class tests |
+| 801–806 | Ordered workflow steps |
 | 900 | CSV and Excel data-driven tests |
 
-## Parallel execution (pytest-xdist)
-
-`pytest.ini` sets `--dist loadfile`, so with `-n` each test file stays on one worker and the
-order inside a file is kept. pytest-order guarantees order per worker only, so use a serial
-run when the full global order matters. The suite is small, so `-n auto` is mostly a demo:
-worker start-up can cost more than it saves.
+`pytest-order` applies order within a worker. With `pytest-xdist`, `--dist loadfile` keeps each test file on one worker, but it does not guarantee one global order across workers. Use a serial run when the overall order matters.
 
 ## Test counts
 
-150 tests: 71 by Ahmed, 64 by Abdullah, 15 shared (smoke, workflow, CSV/Excel row-count checks
-and the four CSV examples).
+The suite contains 150 tests: 71 attributed to Ahmed, 64 to Abdullah, and 15 shared smoke, workflow, and data-check tests. The current repository passed all 150 tests in both serial and four-worker runs.

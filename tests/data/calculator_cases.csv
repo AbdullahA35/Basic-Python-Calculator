@@ -1,0 +1,7 @@
+operation,a,b,expected,description,author
+addition,2,3,5,positive addition,ahmed
+addition,-2,3,1,mixed-sign addition,ahmed
+subtraction,0,0,0,zero boundary,ahmed
+multiplication,2,3,6,positive multiplication,ahmed
+division,5,2,2.5,fractional result,ahmed
+division,-6,3,-2,negative quotient,ahmed

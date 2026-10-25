@@ -1,8 +1,8 @@
 """Calculator class that wraps the four operations and keeps a history."""
-from addition import add
-from subtraction import subtract
-from multiplication import multiply
-from division import divide
+from .addition import add
+from .subtraction import subtract
+from .multiplication import multiply
+from .division import divide
 
 
 class Calculator:

@@ -1,5 +1,5 @@
 import pytest
-from subtraction import subtract
+from calculator.subtraction import subtract
 
 # Group order 300 (subtraction): groups run smoke > addition > subtraction > multiplication > division > methods > class > workflow > data-driven.
 pytestmark = [pytest.mark.unit, pytest.mark.subtraction, pytest.mark.ahmed, pytest.mark.order(300)]

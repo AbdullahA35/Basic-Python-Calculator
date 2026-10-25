@@ -1,5 +1,5 @@
 import pytest
-from addition import add
+from calculator.addition import add
 
 # Group order 200 (addition): groups run smoke > addition > subtraction > multiplication > division > methods > class > workflow > data-driven.
 pytestmark = [pytest.mark.unit, pytest.mark.addition, pytest.mark.ahmed, pytest.mark.order(200)]

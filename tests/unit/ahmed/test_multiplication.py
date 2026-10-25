@@ -1,5 +1,5 @@
 import pytest
-from multiplication import multiply
+from calculator.multiplication import multiply
 
 # Group order 400 (multiplication): groups run smoke > addition > subtraction > multiplication > division > methods > class > workflow > data-driven.
 pytestmark = [pytest.mark.unit, pytest.mark.multiplication, pytest.mark.ahmed, pytest.mark.order(400)]

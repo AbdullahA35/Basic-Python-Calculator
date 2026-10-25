@@ -1,5 +1,5 @@
 import pytest
-from division import divide
+from calculator.division import divide
 
 # Group order 500 (division): groups run smoke > addition > subtraction > multiplication > division > methods > class > workflow > data-driven.
 pytestmark = [pytest.mark.unit, pytest.mark.division, pytest.mark.ahmed, pytest.mark.order(500)]
